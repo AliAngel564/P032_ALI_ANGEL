@@ -33,6 +33,9 @@ class Characters
 
 int main()
 {
-    Characters Cyrilla("Cyrilla",30,"knight");
+    Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants to go afterthe biggest achievement there is, coming out of the Necromancer's dungeon alive.",30);
     
+    std::cout<<cyrilla.getBackground();
+
+    return 0;
 }
