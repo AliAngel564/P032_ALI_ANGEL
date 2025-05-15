@@ -2,7 +2,11 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
+#include <vector>
 
+/*We have a class named Characters that have different attributes, like the character's name, their background, their health, and a bool for each
+character that can be selected, our class methods are, a constructor to more easily make characters, a getter for every variable, and three methods
+that change the character bools to true, also two more class functions that modify the character's health*/
 class Characters
 {
     private:
@@ -44,15 +48,36 @@ class Characters
     {
         setToEphraim = true;
     }
-
+    bool checkEphraim()
+    {
+        return setToEphraim;
+    }
+    bool checkCyrilla()
+    {
+        return setToCyrilla;
+    }
+    bool checkPetrou()
+    {
+        return setToPetrou;
+    }
+    void addHealth(int positiveHealth)
+    {
+        health = health + positiveHealth;
+    }
+    void substractHealth(int negativeHealth)
+    {
+        health = health - negativeHealth;
+    }
 };
-
+/*Another Class called Rooms that has the room name, room description, an extra inspection, and Ephraim's unique perspective of the room
+we also have a constructor for this class, and a getter for each variable*/
 class Rooms
 {
     private:
     std::string roomName;
     std::string roomDescription;
     std::string extraDescription;
+    //añadir el de Ephraim 
 
     public:
     Rooms(std::string usrRoomName = "Default", std::string usrDescription = "Default",std::string usrExtraDescription = "DEFAULT")
@@ -69,70 +94,95 @@ class Rooms
     {
         return roomDescription;
     }
+    //añadir getters que faltan
 };
-
-void titleScreen();
-void gameStart(Characters *allCharacters,int size);
-void getCharacterNames(Characters *allCharacters, int size);
-void getCharacterInfo(Characters *allCharacters, int size);
+//We declared the functions that we're going to use throughout the program
+void titleScreen(std::vector<Characters>allCharacters);
+void gameStart(std::vector<Characters>& allCharacters);
+void getCharacterNames(std::vector<Characters>& allCharacters);
+void getCharacterInfo(std::vector <Characters>& allCharacters, int character);
+void textBox(std::string text);
 void pressAnyKey();
 
 int main()
 {
-    Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants to go afterthe biggest achievement there is, coming out of the Necromancer's dungeon alive.",30);
-    Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a journey to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned",15);
-    Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived in communion with the dark, having always been talented in the arcane arts, he was asked to go to ne necromancer's lair with no further instructions",10);
+    Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.",30);
+    Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned",15);
+    Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers\n give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived\n in communion with the dark, having always been talented in the arcane arts, he was asked to go to the necromancer's lair\n with no further instructions",10);
 
-    Characters allCharacters[3] = {cyrilla,petrou,ephraim};
+    std::vector <Characters> allCharacters = {cyrilla,petrou,ephraim};
 
     Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ");
     
-    gameStart(allCharacters,3);
+    titleScreen(allCharacters);
+
 
     return 0;
 }
-
-void titleScreen()
+/*The main menu, the game's title is displayed along with the starting options*/
+void titleScreen(std::vector<Characters>allCharacters)
 {
     std::string opt;
-    std::cout<<"//////////NECROMANCER//////////\n\n1.-Start\n2.-Exit\n\nopt: ";
+    std::cout<<"NECROMANCER\n~~~~~~~~~~~~~~~~~~~~\n1.-Game Start\n9.-End Program\n\nopt: ";
     std::cin>>opt;
+    if(opt=="1")
+    {
+        gameStart(allCharacters);
+    }else if (opt != "1" && opt != "9")
+    {
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+        titleScreen(allCharacters);
+    }
 
 }
 
-void gameStart(Characters *allCharacters,int size)
+/*What happens after the game stars, there are 3 options, to select a character, view the details about
+a character and exit the program.                                                                      */
+void gameStart(std::vector <Characters>& allCharacters)
 {
+    system("cls");
     bool whileLoop = true;
-    int opt;
-    std::cout<<"\n~~~~~OPTIONS~~~~~\n1.-Select Character\n2.-View Character Details\n9.-Exit Program\n\nOPT: ";
+    std::string opt;
+    int characterSelect;
+    std::cout<<"~~~~~OPTIONS~~~~~\n1.-Select Character\n2.-View Character Details\n9.-Exit Program\n\nOPT: ";
     std::cin>>opt;
    
     
-    if(opt==1)
+    if(opt=="1")
     {
         while(whileLoop)
         {
         system("cls");
-        std::cout<<"\nYou can enter the dungeon with the following characters\n";
-        getCharacterNames(allCharacters,size);
+        std::cout<<"\nYOU CAN EMBARK ON YOUR JOURNEY WITH THE FOLLOWING CHARACTERS\n~~~~~~~~~~~~~~~~~~~~\n";
+        getCharacterNames(allCharacters);
+        std::cout<<"~~~~~~~~~~~~~~~~~~~~\n8.-Return to Previous Menu";
+        std::cout<<"\n9.-END PROGRAM";
         std::cout<<"\n\nOPT: ";
-        std::cin>>opt;
-        switch(opt)
+        std::cin>>characterSelect;
+        switch(characterSelect)
         {
         case 1:
-        std::cout<<"You chose Cyrilla as your character";
-        allCharacters[1].selectCyrilla();
+        std::cout<<"You chose Cyrilla as your character\n";
+        allCharacters[0].selectCyrilla();
+        std::cout<<allCharacters[0].checkCyrilla();
         whileLoop = false;
         break;
         case 2:
         std::cout<<"You chose Petrou as your character";
-        allCharacters[2].selectPetrou();
+        allCharacters[1].selectPetrou();
+        std::cout<<allCharacters[1].checkPetrou();
         whileLoop = false;
         break;
         case 3:
         std::cout<<"You chose Ephraim as your character";
-        allCharacters[3].selectEphraim();
+        allCharacters[2].selectEphraim();
+        std::cout<<allCharacters[2].checkEphraim();
         whileLoop = false;
+        break;
+        case 8:
+        system("cls");
+        gameStart(allCharacters);
         break;
         case 9:
         whileLoop = false;
@@ -143,28 +193,80 @@ void gameStart(Characters *allCharacters,int size)
         break;
         }
         }
-    }
-    
-
-}
-
-void getCharacterNames(Characters *allcharacters, int size)
-{
-    for(int i=0;i<size;i++)
+    }else if(opt=="2")
     {
-        std::cout<<i+1<<".-"<<(allcharacters+i)->getName()<<"\n";
+        while(whileLoop)
+        {
+            characterSelect=0;
+            system("cls");
+            std::cout<<"What character do you want to get info About?\n\n~~~~~CHARACTERS~~~~~\n";
+            getCharacterNames(allCharacters);
+            std::cout<<"~~~~~~~~~~~~~~~~~~~~\n8.-Return to Previous Menu";
+            std::cout<<"\n9.-END PROGRAM\n\nOPT: ";
+            std::cin>>characterSelect;
+            if(characterSelect > 0 && characterSelect < 4)
+            {
+             system("cls");
+             getCharacterInfo(allCharacters,characterSelect-1);
+             pressAnyKey();
+            }else if(characterSelect == 9)
+            {
+             whileLoop = false;
+            }else if(characterSelect == 8)
+            {
+             system("cls");
+             gameStart(allCharacters);
+            }else
+            {
+             system("cls");
+             std::cout<<"That is not a valid option";
+             pressAnyKey();
+            }
+            
+        }
+
     }
-    std::cout<<"\n9.-END PROGRAM";
 }
 
-void getCharacterInfo(Characters *allCharacters, int character)
+/*This function prints the names of our playable characters, I decided
+to challenge myself to learn how vectors work for this project, so I'm
+implementing vectors here, I'm using a range based for loop, at the start of the loop
+a variable is declared that gets passed the first element of the vector through
+reference, and as the for loop iterates through allCharacters the variable
+i prints each position of the vector, we also call the class function getName()
+to print the name of each Character as the loop iterates through the vector */
+void getCharacterNames(std::vector<Characters> &allcharacters)
 {
+    int indexNum = 1;
+    for(Characters& i : allcharacters)
+    {
+        std::cout<<indexNum<<".-"<< i.getName()<<"\n";
+        indexNum++;
+    }
+}
 
+/*Kinda like the previous function but simpler, we ask the user to pick
+the character from a list, the vector gets passed through reference and we
+also use the character's list number as an argument and print each character
+accordingly*/
+void getCharacterInfo(std::vector<Characters>& allCharacters, int character)
+{
+    std::cout<<"Name: "<< allCharacters[character].getName()<<"\n~~~~~~~~~~~~~~~~~~~~"<<"\nBackground: "<<allCharacters[character].getBackground()<<"\n~~~~~~~~~~~~~~~~~~~~\n"<<"HP: "<<allCharacters[character].getHealth()<<"\n~~~~~~~~~~~~~~~~~~~~";
 }
 
 void pressAnyKey()
 {
-    std::cout<<"PRESS ANY KEY TO CONTINUE";
+    std::cout<<"\n\nPRESS ANY KEY TO CONTINUE";
     getch();
     system("cls");
+}
+
+/*We use a string construnctor to make a textbox*/
+void textBox(std::string text)
+{
+    int size = text.size();
+    char box = '~';
+
+    std::string multiplyBox(size,box);
+    std::cout<<multiplyBox<<"\n"<<text<<"\n"<<multiplyBox;
 }
