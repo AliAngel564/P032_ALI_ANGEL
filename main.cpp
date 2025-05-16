@@ -3,6 +3,7 @@
 #include <string>
 #include <conio.h>
 #include <vector>
+#include <random>
 
 /*We have a class named Characters that have different attributes, like the character's name, their background, their health, and a bool for each
 character that can be selected, our class methods are, a constructor to more easily make characters, a getter for every variable, and three methods
@@ -16,6 +17,8 @@ class Characters
     bool setToCyrilla;
     bool setToPetrou;
     bool setToEphraim;
+    int knightDamageFloor = 4;
+    int knightDamageCeiling = 8;
 
     public:
     Characters(std::string usrName = "Default", std::string usrBackground = "Default", int usrHealth = 0)
@@ -68,6 +71,14 @@ class Characters
     {
         health = health - negativeHealth;
     }
+    int cyrillaAttack()
+    {
+        std::random_device rd; 
+        std::mt19937 gen(rd()); 
+        std::uniform_int_distribution<> distr(knightDamageFloor, knightDamageCeiling); // define the range
+
+        return distr(gen);
+    }
 };
 /*Another Class called Rooms that has the room name, room description, an extra inspection, and Ephraim's unique perspective of the room
 we also have a constructor for this class, and a getter for each variable*/
@@ -96,31 +107,95 @@ class Rooms
     }
     //añadir getters que faltan
 };
+
+class Monster : public  Characters
+{
+    private:
+    std::string monsterName;
+    int monsterHealth;
+    std::string monsterDescription;
+    std::string monsterCue;
+    int damageFloor;
+    int damageCeiling;
+
+    public:
+    Monster(std::string usrName="MONSTER",int usrHealth = 10, std::string usrDescription = "DEFAULT",std::string usrCue = "DEFAULT")
+    {
+        monsterName = usrName;
+        monsterHealth = usrHealth;
+        monsterDescription = usrDescription;
+        monsterCue = usrCue;
+    }
+    int getMonsterHealth()
+    {
+        return monsterHealth;
+    }
+    std::string getMonsterDescription()
+    {
+        return monsterDescription;
+    }
+    std::string getMonsterCue()
+    {
+        return monsterCue;
+    }
+    std::string getMonsterName()
+    {
+        return monsterName;
+    }
+    void substractHealth(int usrDamage)
+    {
+        monsterHealth = monsterHealth - usrDamage;
+    }
+};
+
+
 //We declared the functions that we're going to use throughout the program
-void titleScreen(std::vector<Characters>allCharacters);
+void setCurrentCharacter(std::vector <Characters>& allCharacters, const int &currentCharacter);
+void titleScreen(std::vector<Characters>& allCharacters);
 void gameStart(std::vector<Characters>& allCharacters);
 void getCharacterNames(std::vector<Characters>& allCharacters);
 void getCharacterInfo(std::vector <Characters>& allCharacters, int character);
 void textBox(std::string text);
 void pressAnyKey();
+void combatEncounter(std::vector <Characters>& allCharacters,int character, Monster &thisMonster);
 
 int main()
 {
+    int currentCharacter;
+
     Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.",30);
     Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned",15);
     Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers\n give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived\n in communion with the dark, having always been talented in the arcane arts, he was asked to go to the necromancer's lair\n with no further instructions",10);
 
     std::vector <Characters> allCharacters = {cyrilla,petrou,ephraim};
 
+    Monster undeadAdventurer("Undead Adventurer",20,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon");
+
     Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ");
     
-    titleScreen(allCharacters);
+    //titleScreen(allCharacters);
+    //combatEncounter(allCharacters,knight,undeadAdventurer);
 
 
     return 0;
 }
+
+void setCurrentCharacter(std::vector <Characters>& allCharacters,int &currentCharacter)
+{
+    if(allCharacters[0].checkCyrilla() == true)
+    {
+        currentCharacter = 0;
+    }else if(allCharacters[1].checkPetrou() == true)
+    {
+        currentCharacter = 1;
+    }else if(allCharacters[2].checkEphraim() == true)
+    {
+        currentCharacter = 2;
+    }
+}
+
 /*The main menu, the game's title is displayed along with the starting options*/
-void titleScreen(std::vector<Characters>allCharacters)
+void titleScreen(std::vector<Characters>& allCharacters)
 {
     std::string opt;
     std::cout<<"NECROMANCER\n~~~~~~~~~~~~~~~~~~~~\n1.-Game Start\n9.-End Program\n\nopt: ";
@@ -139,7 +214,7 @@ void titleScreen(std::vector<Characters>allCharacters)
 
 /*What happens after the game stars, there are 3 options, to select a character, view the details about
 a character and exit the program.                                                                      */
-void gameStart(std::vector <Characters>& allCharacters)
+void gameStart(std::vector <Characters> &allCharacters)
 {
     system("cls");
     bool whileLoop = true;
@@ -215,6 +290,7 @@ void gameStart(std::vector <Characters>& allCharacters)
             }else if(characterSelect == 8)
             {
              system("cls");
+             whileLoop =  false;
              gameStart(allCharacters);
             }else
             {
@@ -249,7 +325,7 @@ void getCharacterNames(std::vector<Characters> &allcharacters)
 the character from a list, the vector gets passed through reference and we
 also use the character's list number as an argument and print each character
 accordingly*/
-void getCharacterInfo(std::vector<Characters>& allCharacters, int character)
+void getCharacterInfo(std::vector<Characters>& allCharacters, int &character)
 {
     std::cout<<"Name: "<< allCharacters[character].getName()<<"\n~~~~~~~~~~~~~~~~~~~~"<<"\nBackground: "<<allCharacters[character].getBackground()<<"\n~~~~~~~~~~~~~~~~~~~~\n"<<"HP: "<<allCharacters[character].getHealth()<<"\n~~~~~~~~~~~~~~~~~~~~";
 }
@@ -269,4 +345,18 @@ void textBox(std::string text)
 
     std::string multiplyBox(size,box);
     std::cout<<multiplyBox<<"\n"<<text<<"\n"<<multiplyBox;
+}
+
+void combatEncounter(std::vector <Characters>& allCharacters,const int &character, Monster &thisMonster)
+{
+    bool whileLoop = true;
+    int opt;
+
+    if(allCharacters[character].checkCyrilla() == true)
+    {
+    std::cout<<thisMonster.getMonsterDescription();
+    std::cout<<"\n~~~~~~~~~~~~~~~~~~~~\n1.-Attack\n2.-Inventory\n9.-END PROGRAM\nOPT: ";
+    //std::cin>>opt;
+    }
+    
 }
