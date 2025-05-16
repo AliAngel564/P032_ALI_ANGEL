@@ -14,9 +14,9 @@ class Characters
     std::string name;
     std::string background;
     int health;
-    bool setToCyrilla;
-    bool setToPetrou;
-    bool setToEphraim;
+    bool setToCyrilla = false;
+    bool setToPetrou = false;
+    bool setToEphraim = false;
     int knightDamageFloor = 4;
     int knightDamageCeiling = 8;
 
@@ -108,7 +108,7 @@ class Rooms
     //añadir getters que faltan
 };
 
-class Monster : public  Characters
+class Monster
 {
     private:
     std::string monsterName;
@@ -150,7 +150,6 @@ class Monster : public  Characters
 
 
 //We declared the functions that we're going to use throughout the program
-void setCurrentCharacter(std::vector <Characters>& allCharacters, const int &currentCharacter);
 void titleScreen(std::vector<Characters>& allCharacters);
 void gameStart(std::vector<Characters>& allCharacters);
 void getCharacterNames(std::vector<Characters>& allCharacters);
@@ -158,6 +157,7 @@ void getCharacterInfo(std::vector <Characters>& allCharacters, int character);
 void textBox(std::string text);
 void pressAnyKey();
 void combatEncounter(std::vector <Characters>& allCharacters,int character, Monster &thisMonster);
+void setCurrentCharacter(std::vector <Characters>& allCharacters, int &currentCharacter);
 
 int main()
 {
@@ -173,9 +173,10 @@ int main()
 
     Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ");
     
-    //titleScreen(allCharacters);
-    //combatEncounter(allCharacters,knight,undeadAdventurer);
-
+    
+    titleScreen(allCharacters);
+    setCurrentCharacter(allCharacters,currentCharacter);
+    
 
     return 0;
 }
@@ -325,7 +326,7 @@ void getCharacterNames(std::vector<Characters> &allcharacters)
 the character from a list, the vector gets passed through reference and we
 also use the character's list number as an argument and print each character
 accordingly*/
-void getCharacterInfo(std::vector<Characters>& allCharacters, int &character)
+void getCharacterInfo(std::vector<Characters>& allCharacters, int character)
 {
     std::cout<<"Name: "<< allCharacters[character].getName()<<"\n~~~~~~~~~~~~~~~~~~~~"<<"\nBackground: "<<allCharacters[character].getBackground()<<"\n~~~~~~~~~~~~~~~~~~~~\n"<<"HP: "<<allCharacters[character].getHealth()<<"\n~~~~~~~~~~~~~~~~~~~~";
 }
