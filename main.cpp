@@ -148,24 +148,58 @@ class Monster
     }
 };
 
+class InventoryItems
+{
+    private:
+    std::string objectName;
+    std::string objectDescription;
+    int objectAmount;
+    int objectModifier;
+    public:
+    InventoryItems(std::string usrObjectName = "DEFAULT",std::string usrObjectDescription = "DEFAULT",int usrObjectAmount = 0, int usrObjectModifier = 0)
+    {
+        objectName = usrObjectName;
+        objectDescription = usrObjectDescription;
+        objectAmount = usrObjectAmount;
+        objectModifier = usrObjectModifier;
+    }
+    std::string getObjectName()
+    {
+        return objectName;
+    }
+    std::string getObjectDescription()
+    {
+        return objectDescription;
+    }
+    int getObjectAmonunt()
+    {
+        return objectAmount;
+    }
+    int getObjectModifier()
+    {
+        return objectModifier;
+    }
+};
+
 
 //We declared the functions that we're going to use throughout the program
 void titleScreen(std::vector<Characters>& allCharacters);
 void gameStart(std::vector<Characters>& allCharacters);
 void getCharacterNames(std::vector<Characters>& allCharacters);
 void getCharacterInfo(std::vector <Characters>& allCharacters, int character);
+void getInventoryItems(std::vector <InventoryItems>& characterInventory);
 void textBox(std::string text);
 void pressAnyKey();
-void combatEncounter(std::vector <Characters>& allCharacters,int character, Monster &thisMonster);
+void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <InventoryItems>& characterInventory, Monster &thisMonster);
 void setCurrentCharacter(std::vector <Characters>& allCharacters, int &currentCharacter);
 
 int main()
 {
     int currentCharacter;
 
-    Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.",30);
-    Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned",15);
-    Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers\n give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived\n in communion with the dark, having always been talented in the arcane arts, he was asked to go to the necromancer's lair\n with no further instructions",10);
+    Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.",25);
+    Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned",20);
+    Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers\n give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived\n in communion with the dark, having always been talented in the arcane arts, he was asked to go to the necromancer's lair\n with no further instructions",23);
 
     std::vector <Characters> allCharacters = {cyrilla,petrou,ephraim};
 
@@ -173,9 +207,15 @@ int main()
 
     Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ");
     
+    InventoryItems strenghtPotion("Potion of Strenght","A small tube filled with a colorless fluid, drinking it increases your strenght",3,10);
+    InventoryItems healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
+
+    std::vector <InventoryItems> cyrillaInventory = {strenghtPotion};
+    std::vector <InventoryItems> petrouInventory = {healingPotion};
     
     titleScreen(allCharacters);
     setCurrentCharacter(allCharacters,currentCharacter);
+    cyrillaCombat(allCharacters,cyrillaInventory, undeadAdventurer);
     
 
     return 0;
@@ -241,19 +281,17 @@ void gameStart(std::vector <Characters> &allCharacters)
         case 1:
         std::cout<<"You chose Cyrilla as your character\n";
         allCharacters[0].selectCyrilla();
-        std::cout<<allCharacters[0].checkCyrilla();
+        system("cls");
         whileLoop = false;
         break;
         case 2:
         std::cout<<"You chose Petrou as your character";
         allCharacters[1].selectPetrou();
-        std::cout<<allCharacters[1].checkPetrou();
         whileLoop = false;
         break;
         case 3:
         std::cout<<"You chose Ephraim as your character";
         allCharacters[2].selectEphraim();
-        std::cout<<allCharacters[2].checkEphraim();
         whileLoop = false;
         break;
         case 8:
@@ -322,6 +360,15 @@ void getCharacterNames(std::vector<Characters> &allcharacters)
     }
 }
 
+void getInventoryItems(std::vector <InventoryItems>& characterInventory)
+{
+    int indexNum = 1;
+    for(InventoryItems& i : characterInventory)
+    {
+        std::cout<<indexNum<<".-"<<i.getObjectName()<<"\n";
+    }
+}
+
 /*Kinda like the previous function but simpler, we ask the user to pick
 the character from a list, the vector gets passed through reference and we
 also use the character's list number as an argument and print each character
@@ -348,16 +395,22 @@ void textBox(std::string text)
     std::cout<<multiplyBox<<"\n"<<text<<"\n"<<multiplyBox;
 }
 
-void combatEncounter(std::vector <Characters>& allCharacters,const int &character, Monster &thisMonster)
+void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <InventoryItems>& characterInventory, Monster &thisMonster)
 {
     bool whileLoop = true;
     int opt;
 
-    if(allCharacters[character].checkCyrilla() == true)
+    while(whileLoop)
     {
-    std::cout<<thisMonster.getMonsterDescription();
-    std::cout<<"\n~~~~~~~~~~~~~~~~~~~~\n1.-Attack\n2.-Inventory\n9.-END PROGRAM\nOPT: ";
-    //std::cin>>opt;
+        std::cout<<thisMonster.getMonsterDescription();
+        std::cout<<"\n~~~~~~~~~~~~~~~~~~~~\n1.-Attack\n2.-Inventory\n9.-END PROGRAM\nOPT: ";
+        std::cin>>opt;
+        if(opt == 1)
+        {
+            std::cout<<allCharacters[0].cyrillaAttack();
+            pressAnyKey();
+            
+        }    
     }
     
 }
