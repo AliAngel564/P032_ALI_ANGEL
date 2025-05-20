@@ -3,7 +3,8 @@
 #include <string>
 #include <conio.h>
 #include <vector>
-#include <random>
+#include <cstdlib>
+#include <ctime>
 
 /*We have a class named Characters that have different attributes, like the character's name, their background, their health, and a bool for each
 character that can be selected, our class methods are, a constructor to more easily make characters, a getter for every variable, and three methods
@@ -71,14 +72,19 @@ class Characters
     {
         health = health - negativeHealth;
     }
-    int cyrillaAttack()
+    void strenghtCyrilla(int abilityModifier)
     {
-        std::random_device rd; 
-        std::mt19937 gen(rd()); 
-        std::uniform_int_distribution<> distr(knightDamageFloor, knightDamageCeiling); // define the range
-
-        return distr(gen);
+        knightDamageCeiling = knightDamageCeiling + abilityModifier;
+        knightDamageFloor = knightDamageFloor + abilityModifier;
     }
+    int cyrillaAttack()
+    {  
+        srand(time(0));
+        int damage = rand() % (knightDamageCeiling - knightDamageFloor +1) + knightDamageFloor;
+
+        return damage;
+    }
+
 };
 /*Another Class called Rooms that has the room name, room description, an extra inspection, and Ephraim's unique perspective of the room
 we also have a constructor for this class, and a getter for each variable*/
@@ -146,38 +152,45 @@ class Monster
     {
         monsterHealth = monsterHealth - usrDamage;
     }
+    int monsterAttack()
+    {  
+        srand(time(0));
+        int damage = rand() % (damageCeiling - damageFloor +1) + damageFloor;
+
+        return damage;
+    }
 };
 
-class InventoryItems
+class CharacterAbilities : public Characters
 {
     private:
-    std::string objectName;
-    std::string objectDescription;
-    int objectAmount;
-    int objectModifier;
+    std::string abilityName;
+    std::string abilityDescription;
+    int abilityCooldown;
+    int abilityModifier;
     public:
-    InventoryItems(std::string usrObjectName = "DEFAULT",std::string usrObjectDescription = "DEFAULT",int usrObjectAmount = 0, int usrObjectModifier = 0)
+    CharacterAbilities(std::string usrabilityName = "DEFAULT",std::string usrabilityDescription = "DEFAULT",int usrabilityCooldown = 0, int usrabilityModifier = 0)
     {
-        objectName = usrObjectName;
-        objectDescription = usrObjectDescription;
-        objectAmount = usrObjectAmount;
-        objectModifier = usrObjectModifier;
+        abilityName = usrabilityName;
+        abilityDescription = usrabilityDescription;
+        abilityCooldown = usrabilityCooldown;
+        abilityModifier = usrabilityModifier;
     }
-    std::string getObjectName()
+    std::string getAbilityName()
     {
-        return objectName;
+        return abilityName;
     }
-    std::string getObjectDescription()
+    std::string getAbilityDescription()
     {
-        return objectDescription;
+        return abilityDescription;
     }
-    int getObjectAmonunt()
+    int getAbilityCooldown()
     {
-        return objectAmount;
+        return abilityCooldown;
     }
-    int getObjectModifier()
+    int getAbilityModifier()
     {
-        return objectModifier;
+        return abilityModifier;
     }
 };
 
@@ -187,10 +200,10 @@ void titleScreen(std::vector<Characters>& allCharacters);
 void gameStart(std::vector<Characters>& allCharacters);
 void getCharacterNames(std::vector<Characters>& allCharacters);
 void getCharacterInfo(std::vector <Characters>& allCharacters, int character);
-void getInventoryItems(std::vector <InventoryItems>& characterInventory);
+void getCharacterAbilities(std::vector <CharacterAbilities>& characterInventory);
 void textBox(std::string text);
 void pressAnyKey();
-void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <InventoryItems>& characterInventory, Monster &thisMonster);
+void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbilities, Monster &thisMonster, int &currentCharacter);
 void setCurrentCharacter(std::vector <Characters>& allCharacters, int &currentCharacter);
 
 int main()
@@ -207,15 +220,15 @@ int main()
 
     Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ");
     
-    InventoryItems strenghtPotion("Potion of Strenght","A small tube filled with a colorless fluid, drinking it increases your strenght",3,10);
-    InventoryItems healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
+    CharacterAbilities strenghtAbility("Knight's Courage","Cyrilla gathers all her strenght and  greatly increases her strenght for three turns",3,10);
+    CharacterAbilities healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
 
-    std::vector <InventoryItems> cyrillaInventory = {strenghtPotion};
-    std::vector <InventoryItems> petrouInventory = {healingPotion};
+    std::vector <CharacterAbilities> cyrillaAbilities = {strenghtAbility};
+    std::vector <CharacterAbilities> petrouInventory = {healingPotion};
     
     titleScreen(allCharacters);
     setCurrentCharacter(allCharacters,currentCharacter);
-    cyrillaCombat(allCharacters,cyrillaInventory, undeadAdventurer);
+    cyrillaCombat(allCharacters,cyrillaAbilities, undeadAdventurer, currentCharacter);
     
 
     return 0;
@@ -360,12 +373,12 @@ void getCharacterNames(std::vector<Characters> &allcharacters)
     }
 }
 
-void getInventoryItems(std::vector <InventoryItems>& characterInventory)
+void getCharacterAbilities(std::vector <CharacterAbilities>& characterAbilities)
 {
     int indexNum = 1;
-    for(InventoryItems& i : characterInventory)
+    for(CharacterAbilities& i : characterAbilities)
     {
-        std::cout<<indexNum<<".-"<<i.getObjectName()<<"\n";
+        std::cout<<indexNum<<".-"<<i.getAbilityName()<<"\n";
     }
 }
 
@@ -395,22 +408,72 @@ void textBox(std::string text)
     std::cout<<multiplyBox<<"\n"<<text<<"\n"<<multiplyBox;
 }
 
-void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <InventoryItems>& characterInventory, Monster &thisMonster)
+void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbility, Monster &thisMonster, int &currentCharacter)
 {
     bool whileLoop = true;
+    bool abilityCooldown = true;
     int opt;
 
     while(whileLoop)
     {
-        std::cout<<thisMonster.getMonsterDescription();
+        textBox(thisMonster.getMonsterDescription());
         std::cout<<"\n~~~~~~~~~~~~~~~~~~~~\n1.-Attack\n2.-Inventory\n9.-END PROGRAM\nOPT: ";
         std::cin>>opt;
         if(opt == 1)
         {
-            std::cout<<allCharacters[0].cyrillaAttack();
-            pressAnyKey();
+         int attackDamage = allCharacters[currentCharacter].cyrillaAttack();
+         std::cout<<"You attack with your sword dealing " << attackDamage << " damage to the " << thisMonster.getMonsterName();
+         thisMonster.substractHealth(attackDamage);
+         pressAnyKey();
             
-        }    
-    }
+        }else if(opt == 2)
+        {
+             
+        }
     
+    }
+}
+
+void useAbilities(std::vector <CharacterAbilities>& characterAbility, bool &abilityCooldown)
+{
+    int abilityOption;
+    int useAbility;
+    bool whileLoop = true;
+
+    while(whileLoop)
+    {
+    textBox("ABILITIES");
+    std::cout<<"\n";
+    getCharacterAbilities(characterAbility);
+    std::cout<<"\n\nOPT: ";
+    std::cin >> abilityOption;
+    system("cls");
+    textBox(characterAbility[abilityOption-1].getAbilityDescription());
+    std::cout<<"\nUse Ability?\n1.YES\t2.NO\n\nOPT: ";
+    std::cin>>useAbility;
+    switch(useAbility)
+    {
+    case 1:
+    if(abilityCooldown)
+    {
+        int buff = characterAbility[0].getAbilityModifier();
+        std::cout<<"Cyrilla gathers all the strenght within her using her " << characterAbility[abilityOption].getAbilityName();
+        allCharacters[currentCharacter].strenghtCyrilla(buff);
+        whileLoop2 = false;
+    }else
+    {
+        std::cout<<"Cyrilla is exhausted and can't use "<<characterAbility[abilityOption].getAbilityName()<<"right now";
+        whileLoop2 = false;
+    }
+    break;
+    case 2:
+    whileLoop2 = false;
+    break;
+    default:
+    std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+    pressAnyKey();
+    break;
+    }
+
+    }
 }
