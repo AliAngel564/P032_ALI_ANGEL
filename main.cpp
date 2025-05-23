@@ -14,19 +14,23 @@ class Characters
     private:
     std::string name;
     std::string background;
+    std::string attackAction;
     int health;
     bool setToCyrilla = false;
     bool setToPetrou = false;
     bool setToEphraim = false;
-    int knightDamageFloor = 4;
-    int knightDamageCeiling = 8;
+    int damageFloor;
+    int damageCeiling;
 
     public:
-    Characters(std::string usrName = "Default", std::string usrBackground = "Default", int usrHealth = 0)
+    Characters(std::string usrName = "Default", std::string usrBackground = "Default",std::string usrAttackAction = "Default" ,int usrHealth = 0, int usrDamageFloor = 0, int usrDamageCeiling = 0)
     {
         name = usrName;
         background = usrBackground;
+        attackAction = usrAttackAction;
         health = usrHealth;
+        damageFloor = usrDamageFloor;
+        damageCeiling = usrDamageCeiling;
     }
     std::string getName()
     {
@@ -35,6 +39,10 @@ class Characters
     std::string getBackground()
     {
         return background;
+    }
+    std::string getAttackAction()
+    {
+        return attackAction;
     }
     int getHealth()
     {
@@ -74,13 +82,13 @@ class Characters
     }
     void strenghtCyrilla(int abilityModifier)
     {
-        knightDamageCeiling = knightDamageCeiling + abilityModifier;
-        knightDamageFloor = knightDamageFloor + abilityModifier;
+        damageCeiling = damageCeiling + abilityModifier;
+        damageFloor = damageFloor + abilityModifier;
     }
-    int cyrillaAttack()
+    int characterAttack()
     {  
         srand(time(0));
-        int damage = rand() % (knightDamageCeiling - knightDamageFloor +1) + knightDamageFloor;
+        int damage = rand() % (damageCeiling - damageFloor +1) + damageFloor;
 
         return damage;
     }
@@ -118,19 +126,23 @@ class Monster
 {
     private:
     std::string monsterName;
-    int monsterHealth;
     std::string monsterDescription;
+    std::string monsterAttackAction;
     std::string monsterCue;
+    int monsterHealth;
     int damageFloor;
     int damageCeiling;
 
     public:
-    Monster(std::string usrName="MONSTER",int usrHealth = 10, std::string usrDescription = "DEFAULT",std::string usrCue = "DEFAULT")
+    Monster(std::string usrName="MONSTER",int usrHealth = 10, std::string usrDescription = "DEFAULT",std::string usrMonsterAttackAction = "default" ,std::string usrCue = "DEFAULT", int usrDamageFloor = 0, int usrDamageCeiling = 0)
     {
         monsterName = usrName;
         monsterHealth = usrHealth;
         monsterDescription = usrDescription;
+        monsterAttackAction = usrMonsterAttackAction;
         monsterCue = usrCue;
+        damageFloor = usrDamageFloor;
+        damageCeiling = usrDamageCeiling;
     }
     int getMonsterHealth()
     {
@@ -147,6 +159,10 @@ class Monster
     std::string getMonsterName()
     {
         return monsterName;
+    }
+    std::string getMonsterAttack()
+    {
+        return monsterAttackAction;
     }
     void substractHealth(int usrDamage)
     {
@@ -202,21 +218,23 @@ void getCharacterNames(std::vector<Characters>& allCharacters);
 void getCharacterInfo(std::vector <Characters>& allCharacters, int character);
 void getCharacterAbilities(std::vector <CharacterAbilities>& characterInventory);
 void textBox(std::string text);
+void combatHealth(std::vector <Characters>& allCharacters, Monster &thisMonster, int &currentCharacter);
 void pressAnyKey();
-void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbilities, Monster &thisMonster, int &currentCharacter);
+void combatEncounter(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbilities, Monster &thisMonster, int &currentCharacter);
+void monsterAttack(Monster &thisMonster);
 void setCurrentCharacter(std::vector <Characters>& allCharacters, int &currentCharacter);
 
 int main()
 {
     int currentCharacter;
 
-    Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.",25);
-    Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned",20);
-    Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers\n give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived\n in communion with the dark, having always been talented in the arcane arts, he was asked to go to the necromancer's lair\n with no further instructions",23);
+    Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.","You attack with your sword",25,8,10);
+    Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned","You attack with your bare fists" ,20,4,9);
+    Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers\n give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived\n in communion with the dark, having always been talented in the arcane arts, he was asked to go to the necromancer's lair\n with no further instructions","You cast a spell" ,23,8,10);
 
     std::vector <Characters> allCharacters = {cyrilla,petrou,ephraim};
 
-    Monster undeadAdventurer("Undead Adventurer",20,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon");
+    Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon",2,5);
 
     Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ");
     
@@ -228,7 +246,7 @@ int main()
     
     titleScreen(allCharacters);
     setCurrentCharacter(allCharacters,currentCharacter);
-    cyrillaCombat(allCharacters,cyrillaAbilities, undeadAdventurer, currentCharacter);
+    combatEncounter(allCharacters,cyrillaAbilities, undeadAdventurer, currentCharacter);
     
 
     return 0;
@@ -294,17 +312,19 @@ void gameStart(std::vector <Characters> &allCharacters)
         case 1:
         std::cout<<"You chose Cyrilla as your character\n";
         allCharacters[0].selectCyrilla();
-        system("cls");
+        pressAnyKey();
         whileLoop = false;
         break;
         case 2:
-        std::cout<<"You chose Petrou as your character";
+        std::cout<<"You chose Petrou as your character\n";
         allCharacters[1].selectPetrou();
+        pressAnyKey();
         whileLoop = false;
         break;
         case 3:
-        std::cout<<"You chose Ephraim as your character";
+        std::cout<<"You chose Ephraim as your character\n";
         allCharacters[2].selectEphraim();
+        pressAnyKey();
         whileLoop = false;
         break;
         case 8:
@@ -398,7 +418,7 @@ void pressAnyKey()
     system("cls");
 }
 
-/*We use a string construnctor to make a textbox*/
+/*We use a string constructor to make a textbox*/
 void textBox(std::string text)
 {
     int size = text.size();
@@ -408,33 +428,68 @@ void textBox(std::string text)
     std::cout<<multiplyBox<<"\n"<<text<<"\n"<<multiplyBox;
 }
 
-void cyrillaCombat(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbility, Monster &thisMonster, int &currentCharacter)
+void combatEncounter(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbility, Monster &thisMonster, int &currentCharacter)
 {
     bool whileLoop = true;
     bool abilityCooldown = true;
-    int opt;
+    std::string opt;
 
+    
     while(whileLoop)
     {
+        combatHealth(allCharacters, thisMonster, currentCharacter);
         textBox(thisMonster.getMonsterDescription());
-        std::cout<<"\n~~~~~~~~~~~~~~~~~~~~\n1.-Attack\n2.-Inventory\n9.-END PROGRAM\nOPT: ";
+        if(thisMonster.getMonsterHealth()<=0)
+          {
+            system("cls");
+            std::cout<<"With a final attack, you take down the "<<thisMonster.getMonsterName();
+            pressAnyKey();
+            whileLoop = false;
+          }else if (allCharacters[currentCharacter].getHealth()<=0)
+          {
+            std::cout<<"You were slain by the "<<thisMonster.getMonsterName();
+          }
+        std::cout<<"\n~~~~~~~~~~~~~~~~~~~~\n1.-Attack\n9.-END PROGRAM\nOPT: ";
         std::cin>>opt;
-        if(opt == 1)
+        if(opt == "1")
         {
-         int attackDamage = allCharacters[currentCharacter].cyrillaAttack();
-         std::cout<<"You attack with your sword dealing " << attackDamage << " damage to the " << thisMonster.getMonsterName();
-         thisMonster.substractHealth(attackDamage);
-         pressAnyKey();
+          if(allCharacters[currentCharacter].getHealth() > 0 && thisMonster.getMonsterHealth() > 0)
+          {
+             int attackDamage = allCharacters[currentCharacter].characterAttack();
+             std::cout<<allCharacters[currentCharacter].getAttackAction() <<" dealing " << attackDamage << " damage to the " << thisMonster.getMonsterName();
+             thisMonster.substractHealth(attackDamage);
+             pressAnyKey();
+          }
+
+          /*int monsterDamage = thisMonster.monsterAttack();
+          monsterAttack(thisMonster);
+          std::cout<<" dealing " << monsterDamage<< " damage";
+          allCharacters[currentCharacter].substractHealth(monsterDamage);
+          */
             
-        }else if(opt == 2)
+        }else if (opt == "9")
         {
-             
+            break;
+        }else 
+        {
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
         }
-    
     }
 }
 
-void useAbilities(std::vector <CharacterAbilities>& characterAbility, bool &abilityCooldown)
+void monsterAttack(Monster &thisMonster)
+{
+ std::cout<<"The "<<thisMonster.getMonsterName()<<" "<<thisMonster.getMonsterAttack();
+}
+
+void combatHealth(std::vector <Characters>& allCharacters, Monster &thisMonster, int &currentCharacter)
+{
+    std::cout<<allCharacters[currentCharacter].getName()<<" ~~~~HP: "<<allCharacters[currentCharacter].getHealth();
+    std::cout<<" ~~~~"<<thisMonster.getMonsterName()<<" ~~~~HP: "<<thisMonster.getMonsterHealth()<<"\n\n";
+}
+
+/*void useAbilities(std::vector <CharacterAbilities>& characterAbility, bool &abilityCooldown)
 {
     int abilityOption;
     int useAbility;
@@ -476,4 +531,4 @@ void useAbilities(std::vector <CharacterAbilities>& characterAbility, bool &abil
     }
 
     }
-}
+}*/
