@@ -102,14 +102,17 @@ class Rooms
     std::string roomName;
     std::string roomDescription;
     std::string extraDescription;
-    //añadir el de Ephraim 
+    std::string ephraimDescription;
+    std::string ephraimExtraDescription;
 
     public:
-    Rooms(std::string usrRoomName = "Default", std::string usrDescription = "Default",std::string usrExtraDescription = "DEFAULT")
+    Rooms(std::string usrRoomName = "Default", std::string usrDescription = "Default",std::string usrExtraDescription = "DEFAULT",std::string usrEphraimDescription = "DEFAULT",std::string usrEphraimExtra = "DEFAULT")
     {
         roomName = usrRoomName;
         roomDescription = usrDescription;
         extraDescription = usrExtraDescription;
+        ephraimDescription = usrEphraimDescription;
+        ephraimExtraDescription = usrEphraimExtra;
     }
     std::string getRoomName()
     {
@@ -118,6 +121,14 @@ class Rooms
     std::string getRoomDescription()
     {
         return roomDescription;
+    }
+    std::string getExtraDescription()
+    {
+        return extraDescription;
+    }
+    std::string getEphraimDescription()
+    {
+        return ephraimDescription;
     }
     //añadir getters que faltan
 };
@@ -227,6 +238,8 @@ void setCurrentCharacter(std::vector <Characters>& allCharacters, int &currentCh
 int main()
 {
     int currentCharacter;
+    std::string playerOpt;
+    bool whileLoop = true;
 
     Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.","You attack with your sword",25,8,10);
     Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned","You attack with your bare fists" ,20,4,9);
@@ -236,7 +249,7 @@ int main()
 
     Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon",2,5);
 
-    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ");
+    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
     
     CharacterAbilities strenghtAbility("Knight's Courage","Cyrilla gathers all her strenght and  greatly increases her strenght for three turns",3,10);
     CharacterAbilities healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
@@ -246,9 +259,74 @@ int main()
     
     titleScreen(allCharacters);
     setCurrentCharacter(allCharacters,currentCharacter);
-    combatEncounter(allCharacters,cyrillaAbilities, undeadAdventurer, currentCharacter);
-    
+    //combatEncounter(allCharacters,cyrillaAbilities, undeadAdventurer, currentCharacter);
+    if(currentCharacter == 0 || currentCharacter == 1)
+    {
+    while(whileLoop)
+    {
+    textBox("You've been traveling by horse for days now, just when you're starting to lose hope you finally see it, the necromancer's lair");
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cin>>playerOpt;
+    if (playerOpt == "1")
+    {
+        system("cls");
+        whileLoop = false;
+        playerOpt = "";
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        std::cin.ignore();
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+    }
+    }
+    whileLoop = true;
+    while(whileLoop)
+    {
+    textBox("You get down from your horse and tie it to a nearby tree, finally, you head toward the lair's entrance");
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cin>>playerOpt;
+    }
+    }
+        
 
+        /*else
+        {
+        system("cls");
+        textBox("You reach what looks like a mine entrance, but a lot smaller, there's a set of stairs directly after the entrance");
+        std::cout<<"\n\nDO YOU WANT TO HEAD INTO THE NECROMANCER'S LAIR?";
+        std::cout<<"\n\n1.-Enter the dungeon\n2.-Go back home\n9.-End Program\nOPT:";
+        std::cin>>playerOpt;
+        }
+        if(playerOpt == "9")
+        {
+        whileLoop = false;
+        }else if(playerOpt == "2")
+        {
+        system("cls");
+        textBox("The lair's heavy atmosphere weighs down on you, suddenly you begin to think about the people you love most, you decide risking your life is not worth it");
+        pressAnyKey();
+        textBox("You head back to your horse and ride towards Erstonia, maybe a brave enough person will banish the curse once and for all, but that person isn't you");
+        textBox("THE END");
+        whileLoop = false;
+        }
+    }else
+    {
+    textBox("You've been traveling for days, a guide was assigned to lead you to the entrance of the necromancer's lair, and you're finally here");
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cin>>playerOpt;
+    if(playerOpt == "9")
+    {
+        whileLoop = false;
+    }
+    pressAnyKey();
+    }
+    }
+    */
+    
     return 0;
 }
 
@@ -291,7 +369,7 @@ void gameStart(std::vector <Characters> &allCharacters)
     system("cls");
     bool whileLoop = true;
     std::string opt;
-    int characterSelect;
+    std::string characterSelect;
     std::cout<<"~~~~~OPTIONS~~~~~\n1.-Select Character\n2.-View Character Details\n9.-Exit Program\n\nOPT: ";
     std::cin>>opt;
    
@@ -307,44 +385,43 @@ void gameStart(std::vector <Characters> &allCharacters)
         std::cout<<"\n9.-END PROGRAM";
         std::cout<<"\n\nOPT: ";
         std::cin>>characterSelect;
-        switch(characterSelect)
+        
+        if(characterSelect == "1")
         {
-        case 1:
-        std::cout<<"You chose Cyrilla as your character\n";
+        textBox("You chose Cyrilla as your character");
         allCharacters[0].selectCyrilla();
         pressAnyKey();
         whileLoop = false;
-        break;
-        case 2:
-        std::cout<<"You chose Petrou as your character\n";
+        }else if(characterSelect == "2")
+        {
+        textBox("You chose Petrou as your character");
         allCharacters[1].selectPetrou();
         pressAnyKey();
         whileLoop = false;
-        break;
-        case 3:
-        std::cout<<"You chose Ephraim as your character\n";
+        }else if(characterSelect == "3")
+        {
+        textBox("You chose Ephraim as your character");
         allCharacters[2].selectEphraim();
         pressAnyKey();
         whileLoop = false;
-        break;
-        case 8:
+        }else if(characterSelect =="8")
+        {
         system("cls");
         gameStart(allCharacters);
-        break;
-        case 9:
+        }else if (characterSelect == "9")
+        {
         whileLoop = false;
-        break;
-        default:
+        }else
+        {
         std::cout<<"INVALID OPTION, TRY AGAIN\n\n";
         pressAnyKey();
-        break;
         }
         }
     }else if(opt=="2")
     {
         while(whileLoop)
         {
-            characterSelect=0;
+            int characterSelect = 0;
             system("cls");
             std::cout<<"What character do you want to get info About?\n\n~~~~~CHARACTERS~~~~~\n";
             getCharacterNames(allCharacters);
@@ -373,6 +450,11 @@ void gameStart(std::vector <Characters> &allCharacters)
             
         }
 
+    }else
+    {
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+        gameStart(allCharacters);
     }
 }
 
@@ -443,8 +525,9 @@ void combatEncounter(std::vector <Characters>& allCharacters,std::vector <Charac
           {
             system("cls");
             std::cout<<"With a final attack, you take down the "<<thisMonster.getMonsterName();
-            pressAnyKey();
             whileLoop = false;
+            pressAnyKey();
+            
           }else if (allCharacters[currentCharacter].getHealth()<=0)
           {
             std::cout<<"You were slain by the "<<thisMonster.getMonsterName();
@@ -459,14 +542,15 @@ void combatEncounter(std::vector <Characters>& allCharacters,std::vector <Charac
              std::cout<<allCharacters[currentCharacter].getAttackAction() <<" dealing " << attackDamage << " damage to the " << thisMonster.getMonsterName();
              thisMonster.substractHealth(attackDamage);
              pressAnyKey();
+             if(thisMonster.getMonsterHealth()>0)
+             {
+             int monsterDamage = thisMonster.monsterAttack();
+             monsterAttack(thisMonster);
+             std::cout<<" dealing " << monsterDamage << " damage.";
+             allCharacters[currentCharacter].substractHealth(monsterDamage);
+             pressAnyKey();
+             }
           }
-
-          /*int monsterDamage = thisMonster.monsterAttack();
-          monsterAttack(thisMonster);
-          std::cout<<" dealing " << monsterDamage<< " damage";
-          allCharacters[currentCharacter].substractHealth(monsterDamage);
-          */
-            
         }else if (opt == "9")
         {
             break;
