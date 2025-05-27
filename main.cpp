@@ -249,7 +249,7 @@ int main()
 
     Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon",2,5);
 
-    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room ","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
+    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
     
     CharacterAbilities strenghtAbility("Knight's Courage","Cyrilla gathers all her strenght and  greatly increases her strenght for three turns",3,10);
     CharacterAbilities healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
@@ -277,7 +277,6 @@ int main()
         return 0;
     }else
     {
-        std::cin.ignore();
         playerOpt = "";
         std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
         pressAnyKey();
@@ -289,30 +288,83 @@ int main()
     textBox("You get down from your horse and tie it to a nearby tree, finally, you head toward the lair's entrance");
     std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
     std::cin>>playerOpt;
-    }
-    }
-        
-
-        /*else
-        {
+    if(playerOpt =="1")
+    {
         system("cls");
-        textBox("You reach what looks like a mine entrance, but a lot smaller, there's a set of stairs directly after the entrance");
-        std::cout<<"\n\nDO YOU WANT TO HEAD INTO THE NECROMANCER'S LAIR?";
-        std::cout<<"\n\n1.-Enter the dungeon\n2.-Go back home\n9.-End Program\nOPT:";
-        std::cin>>playerOpt;
-        }
-        if(playerOpt == "9")
-        {
         whileLoop = false;
-        }else if(playerOpt == "2")
-        {
+        playerOpt = "";
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+    }
+    }
+    whileLoop = true;
+    while(whileLoop)
+    {
+    system("cls");
+    textBox("You reach what looks like a mine entrance, but a lot smaller, there's a set of stairs directly after the entrance");
+    std::cout<<"\n\nDO YOU WANT TO HEAD INTO THE NECROMANCER'S LAIR?";
+    std::cout<<"\n\n1.-Enter the dungeon\n2.-Go back home\n9.-End Program\nOPT:";
+    std::cin>>playerOpt; 
+    if(playerOpt == "1")
+    {
+        system("cls");
+        whileLoop = false;
+        playerOpt = "";
+    }else if(playerOpt == "2")
+    {
         system("cls");
         textBox("The lair's heavy atmosphere weighs down on you, suddenly you begin to think about the people you love most, you decide risking your life is not worth it");
         pressAnyKey();
         textBox("You head back to your horse and ride towards Erstonia, maybe a brave enough person will banish the curse once and for all, but that person isn't you");
+        pressAnyKey();
         textBox("THE END");
+        return 0;  
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+    }
+    }
+    whileLoop= true;
+    while(whileLoop)
+    {
+    textBox("You start going down the stairs, you can't help but wonder what awaits you once you reach the end");
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cin>>playerOpt;
+    if(playerOpt == "1")
+    {
+        system("cls");
         whileLoop = false;
-        }
+        playerOpt = "";
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+    }
+    }
+    whileLoop = true;
+    while(whileLoop)
+    {
+    std::cout<<initialRoom.getRoomName();
+    std::cout<<"\n";
+    textBox(initialRoom.getExtraDescription());
+    std::cout<<"\n\n1.-Continue\n2.-Look around the room\n9.-End Program\nOPT:";
+    }
+
     }else
     {
     textBox("You've been traveling for days, a guide was assigned to lead you to the entrance of the necromancer's lair, and you're finally here");
@@ -324,8 +376,6 @@ int main()
     }
     pressAnyKey();
     }
-    }
-    */
     
     return 0;
 }
@@ -370,11 +420,11 @@ void gameStart(std::vector <Characters> &allCharacters)
     bool whileLoop = true;
     std::string opt;
     std::string characterSelect;
-    std::cout<<"~~~~~OPTIONS~~~~~\n1.-Select Character\n2.-View Character Details\n9.-Exit Program\n\nOPT: ";
+    std::cout<<"~~~~~OPTIONS~~~~~\n1.-View Character Detarils\n2.-Select Character\n9.-Exit Program\n\nOPT: ";
     std::cin>>opt;
    
     
-    if(opt=="1")
+    if(opt=="2")
     {
         while(whileLoop)
         {
@@ -417,7 +467,7 @@ void gameStart(std::vector <Characters> &allCharacters)
         pressAnyKey();
         }
         }
-    }else if(opt=="2")
+    }else if(opt=="1")
     {
         while(whileLoop)
         {
@@ -450,6 +500,9 @@ void gameStart(std::vector <Characters> &allCharacters)
             
         }
 
+    }else if(opt == "9")
+    {
+        exit(0);
     }else
     {
         std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
