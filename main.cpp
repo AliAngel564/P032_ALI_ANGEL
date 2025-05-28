@@ -249,7 +249,7 @@ int main()
 
     Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon",2,5);
 
-    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice a small chest sitting in the middle of the room.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
+    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice two doors opposite of each other at the end of the room, one on the left of the room, the other on the right.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
     
     CharacterAbilities strenghtAbility("Knight's Courage","Cyrilla gathers all her strenght and  greatly increases her strenght for three turns",3,10);
     CharacterAbilities healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
@@ -361,8 +361,19 @@ int main()
     {
     std::cout<<initialRoom.getRoomName();
     std::cout<<"\n";
-    textBox(initialRoom.getExtraDescription());
-    std::cout<<"\n\n1.-Continue\n2.-Look around the room\n9.-End Program\nOPT:";
+    textBox(initialRoom.getRoomDescription());
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cin>>playerOpt;
+    if(playerOpt == "1")
+    {
+        system("cls");
+        whileLoop = false;
+        playerOpt = "";
+    }else if(playerOpt == "2")
+    {
+        system("cls");
+
+    }
     }
 
     }else
