@@ -231,7 +231,7 @@ void getCharacterAbilities(std::vector <CharacterAbilities>& characterInventory)
 void textBox(std::string text);
 void combatHealth(std::vector <Characters>& allCharacters, Monster &thisMonster, int &currentCharacter);
 void pressAnyKey();
-void combatEncounter(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbilities, Monster &thisMonster, int &currentCharacter);
+void combatEncounter(std::vector <Characters>& allCharacters, Monster &thisMonster, int &currentCharacter);
 void monsterAttack(Monster &thisMonster);
 void setCurrentCharacter(std::vector <Characters>& allCharacters, int &currentCharacter);
 
@@ -246,11 +246,19 @@ int main()
     Characters ephraim("Ephraim","Ephraim grew up in a cult that worships a cruel goddess that asks that their followers\n give her their eyes as an act of faith, in exchange for guiding their path, so Ephraim has always lived\n in communion with the dark, having always been talented in the arcane arts, he was asked to go to the necromancer's lair\n with no further instructions","You cast a spell" ,23,8,10);
 
     std::vector <Characters> allCharacters = {cyrilla,petrou,ephraim};
+    allCharacters.shrink_to_fit();
 
     Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon",2,5);
 
-    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice two doors opposite of each other at the end of the room, one on the left of the room, the other on the right.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
-    
+    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice two doors opposite to each other at the end of the room, one on the righ side, the other on the left side.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
+
+    Rooms leftRoom1("Weapons Room", "You slowly open the door and peek through the gap, it looks like the coast is clear","You notice a door straight ahead, it's your only way of moving forward","idk","idk");
+
+    Rooms rightRoom1("Butchery","As you open the door a foul stench overwhelms you, this room resembles a butchery with meat hooks and metal tables","Amidst all the gore you can see a door at the end of the room, it's your only way forward","idk","idk");
+
+    std::vector <Rooms> leftRooms = {leftRoom1};
+    std::vector <Rooms> rightRooms = {rightRoom1};
+
     CharacterAbilities strenghtAbility("Knight's Courage","Cyrilla gathers all her strenght and  greatly increases her strenght for three turns",3,10);
     CharacterAbilities healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
 
@@ -265,7 +273,7 @@ int main()
     while(whileLoop)
     {
     textBox("You've been traveling by horse for days now, just when you're starting to lose hope you finally see it, the necromancer's lair");
-    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
     std::cin>>playerOpt;
     if (playerOpt == "1")
     {
@@ -286,7 +294,7 @@ int main()
     while(whileLoop)
     {
     textBox("You get down from your horse and tie it to a nearby tree, finally, you head toward the lair's entrance");
-    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
     std::cin>>playerOpt;
     if(playerOpt =="1")
     {
@@ -309,7 +317,7 @@ int main()
     system("cls");
     textBox("You reach what looks like a mine entrance, but a lot smaller, there's a set of stairs directly after the entrance");
     std::cout<<"\n\nDO YOU WANT TO HEAD INTO THE NECROMANCER'S LAIR?";
-    std::cout<<"\n\n1.-Enter the dungeon\n2.-Go back home\n9.-End Program\nOPT:";
+    std::cout<<"\n\n1.-Enter the dungeon\n2.-Go back home\n9.-End Program\nOPT: ";
     std::cin>>playerOpt; 
     if(playerOpt == "1")
     {
@@ -339,7 +347,7 @@ int main()
     while(whileLoop)
     {
     textBox("You start going down the stairs, you can't help but wonder what awaits you once you reach the end");
-    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
     std::cin>>playerOpt;
     if(playerOpt == "1")
     {
@@ -362,17 +370,69 @@ int main()
     std::cout<<initialRoom.getRoomName();
     std::cout<<"\n";
     textBox(initialRoom.getRoomDescription());
-    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
     std::cin>>playerOpt;
     if(playerOpt == "1")
     {
         system("cls");
         whileLoop = false;
         playerOpt = "";
-    }else if(playerOpt == "2")
+    }else if(playerOpt == "9")
     {
-        system("cls");
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+    }
+    }
+    whileLoop = true;
+    while(whileLoop)
+    {
+    textBox(initialRoom.getExtraDescription());
+    std::cout<<"\n\nWHAT DOOR DO YOU WANT TO GO THROUGH?\n1.-LEFT DOOR\n2.-RIGHT DOOR\n9.-EXIT PROGRAM\nOPT: ";
+    std::cin>>playerOpt;
+    if(playerOpt == "1")
+    {
+        playerOpt = "";
+        whileLoop = false;
+        bool whileLoop2 = true;
 
+        while(whileLoop2)
+        {
+        system("cls");
+        std::cout<<leftRooms[0].getRoomName();
+        std::cout<<"\n";
+        textBox(leftRooms[0].getRoomDescription());
+        std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+        {
+            system("cls");
+            whileLoop2 = false;
+            playerOpt = "";
+        }else if(playerOpt == "9")
+        {
+            return 0;
+        }else
+        {
+            playerOpt = "";
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
+        }
+        whileLoop2 = true;
+        while(whileLoop2)
+        {
+            std::cout<<leftRooms[0].getRoomName()<<"\n";
+            textBox("You enter the room carefully, closing the door behind you, suddenly you see something rise from a corner of the room, it looks like a person");
+            pressAnyKey();
+            textBox("BATTLE START");
+            pressAnyKey();
+            whileLoop2 = false;
+        }
+        combatEncounter(allCharacters,undeadAdventurer,currentCharacter);
+        }
     }
     }
 
@@ -574,7 +634,7 @@ void textBox(std::string text)
     std::cout<<multiplyBox<<"\n"<<text<<"\n"<<multiplyBox;
 }
 
-void combatEncounter(std::vector <Characters>& allCharacters,std::vector <CharacterAbilities>& characterAbility, Monster &thisMonster, int &currentCharacter)
+void combatEncounter(std::vector <Characters>& allCharacters, Monster &thisMonster, int &currentCharacter)
 {
     bool whileLoop = true;
     bool abilityCooldown = true;
@@ -589,8 +649,8 @@ void combatEncounter(std::vector <Characters>& allCharacters,std::vector <Charac
           {
             system("cls");
             std::cout<<"With a final attack, you take down the "<<thisMonster.getMonsterName();
-            whileLoop = false;
             pressAnyKey();
+            break;
             
           }else if (allCharacters[currentCharacter].getHealth()<=0)
           {
@@ -617,7 +677,7 @@ void combatEncounter(std::vector <Characters>& allCharacters,std::vector <Charac
           }
         }else if (opt == "9")
         {
-            break;
+            exit(0);
         }else 
         {
             std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
