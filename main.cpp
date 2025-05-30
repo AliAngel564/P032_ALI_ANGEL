@@ -188,38 +188,6 @@ class Monster
     }
 };
 
-class CharacterAbilities : public Characters
-{
-    private:
-    std::string abilityName;
-    std::string abilityDescription;
-    int abilityCooldown;
-    int abilityModifier;
-    public:
-    CharacterAbilities(std::string usrabilityName = "DEFAULT",std::string usrabilityDescription = "DEFAULT",int usrabilityCooldown = 0, int usrabilityModifier = 0)
-    {
-        abilityName = usrabilityName;
-        abilityDescription = usrabilityDescription;
-        abilityCooldown = usrabilityCooldown;
-        abilityModifier = usrabilityModifier;
-    }
-    std::string getAbilityName()
-    {
-        return abilityName;
-    }
-    std::string getAbilityDescription()
-    {
-        return abilityDescription;
-    }
-    int getAbilityCooldown()
-    {
-        return abilityCooldown;
-    }
-    int getAbilityModifier()
-    {
-        return abilityModifier;
-    }
-};
 
 
 //We declared the functions that we're going to use throughout the program
@@ -227,7 +195,6 @@ void titleScreen(std::vector<Characters>& allCharacters);
 void gameStart(std::vector<Characters>& allCharacters);
 void getCharacterNames(std::vector<Characters>& allCharacters);
 void getCharacterInfo(std::vector <Characters>& allCharacters, int character);
-void getCharacterAbilities(std::vector <CharacterAbilities>& characterInventory);
 void textBox(std::string text);
 void combatHealth(std::vector <Characters>& allCharacters, Monster &thisMonster, int &currentCharacter);
 void pressAnyKey();
@@ -258,12 +225,6 @@ int main()
 
     std::vector <Rooms> leftRooms = {leftRoom1};
     std::vector <Rooms> rightRooms = {rightRoom1};
-
-    CharacterAbilities strenghtAbility("Knight's Courage","Cyrilla gathers all her strenght and  greatly increases her strenght for three turns",3,10);
-    CharacterAbilities healingPotion("Healing Potion", "A small tube filled with a thick green fluid", 5, 10);
-
-    std::vector <CharacterAbilities> cyrillaAbilities = {strenghtAbility};
-    std::vector <CharacterAbilities> petrouInventory = {healingPotion};
     
     titleScreen(allCharacters);
     setCurrentCharacter(allCharacters,currentCharacter);
@@ -422,16 +383,57 @@ int main()
             pressAnyKey();
         }
         whileLoop2 = true;
+        
+        std::cout<<leftRooms[0].getRoomName()<<"\n";
+        textBox("You enter the room carefully, closing the door behind you, suddenly you see something rise from a corner of the room, it looks like a person");
+        pressAnyKey();
+        textBox("BATTLE START");
+        pressAnyKey();
+        combatEncounter(allCharacters,undeadAdventurer,currentCharacter);
+
         while(whileLoop2)
         {
-            std::cout<<leftRooms[0].getRoomName()<<"\n";
-            textBox("You enter the room carefully, closing the door behind you, suddenly you see something rise from a corner of the room, it looks like a person");
-            pressAnyKey();
-            textBox("BATTLE START");
-            pressAnyKey();
+        textBox("The adventurer plummets to the ground, you decide not to take anything from his body as a sign of respect");
+        std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+        {
+            system("cls");
             whileLoop2 = false;
+            playerOpt = "";
+        }else if(playerOpt == "9")
+        {
+            return 0;
+        }else
+        {
+            playerOpt = "";
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
         }
-        combatEncounter(allCharacters,undeadAdventurer,currentCharacter);
+        }
+        whileLoop2 = true;
+        while (whileLoop2)
+        {
+            std::cout<<leftRooms[0].getRoomName()<<"\n";
+            textBox(leftRooms[0].getExtraDescription());
+            std::cout<<"\n\n1.-Go through the door\n9.-End Program\nOPT: ";
+            std::cin>>playerOpt;
+            if(playerOpt == "1")
+            {
+                system("cls");
+                whileLoop2 = false;
+                playerOpt = "";
+            }else if(playerOpt == "9")
+            {
+                return 0;
+            }else
+            {
+                playerOpt = "";
+                std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+                pressAnyKey();
+            }
+        }
+        
         }
     }
     }
@@ -599,15 +601,6 @@ void getCharacterNames(std::vector<Characters> &allcharacters)
     }
 }
 
-void getCharacterAbilities(std::vector <CharacterAbilities>& characterAbilities)
-{
-    int indexNum = 1;
-    for(CharacterAbilities& i : characterAbilities)
-    {
-        std::cout<<indexNum<<".-"<<i.getAbilityName()<<"\n";
-    }
-}
-
 /*Kinda like the previous function but simpler, we ask the user to pick
 the character from a list, the vector gets passed through reference and we
 also use the character's list number as an argument and print each character
@@ -697,46 +690,3 @@ void combatHealth(std::vector <Characters>& allCharacters, Monster &thisMonster,
     std::cout<<" ~~~~"<<thisMonster.getMonsterName()<<" ~~~~HP: "<<thisMonster.getMonsterHealth()<<"\n\n";
 }
 
-/*void useAbilities(std::vector <CharacterAbilities>& characterAbility, bool &abilityCooldown)
-{
-    int abilityOption;
-    int useAbility;
-    bool whileLoop = true;
-
-    while(whileLoop)
-    {
-    textBox("ABILITIES");
-    std::cout<<"\n";
-    getCharacterAbilities(characterAbility);
-    std::cout<<"\n\nOPT: ";
-    std::cin >> abilityOption;
-    system("cls");
-    textBox(characterAbility[abilityOption-1].getAbilityDescription());
-    std::cout<<"\nUse Ability?\n1.YES\t2.NO\n\nOPT: ";
-    std::cin>>useAbility;
-    switch(useAbility)
-    {
-    case 1:
-    if(abilityCooldown)
-    {
-        int buff = characterAbility[0].getAbilityModifier();
-        std::cout<<"Cyrilla gathers all the strenght within her using her " << characterAbility[abilityOption].getAbilityName();
-        allCharacters[currentCharacter].strenghtCyrilla(buff);
-        whileLoop2 = false;
-    }else
-    {
-        std::cout<<"Cyrilla is exhausted and can't use "<<characterAbility[abilityOption].getAbilityName()<<"right now";
-        whileLoop2 = false;
-    }
-    break;
-    case 2:
-    whileLoop2 = false;
-    break;
-    default:
-    std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
-    pressAnyKey();
-    break;
-    }
-
-    }
-}*/
