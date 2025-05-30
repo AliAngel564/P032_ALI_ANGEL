@@ -207,6 +207,7 @@ int main()
     int currentCharacter;
     std::string playerOpt;
     bool whileLoop = true;
+    bool whileLoop2 = true;
 
     Characters cyrilla("Cyrilla","A young knight from an Erstonian noble family, since she was young Cyrilla always knew it was her calling\n to protect her people,one achievement after the other Cyrilla quickly cemented herself as an iconic knight, she now wants\n to go after the biggest achievement there is, coming out of the Necromancer's dungeon alive.","You attack with your sword",25,8,10);
     Characters petrou("Petrou","A humble botanist from Erstonia, Petrou noticed the soil was being poisoned by the necromancer's lair, he decided to embark on a \njourney to stop the necromancer, if nobody does anything, Erstonia's crops and water will be forever poisoned","You attack with your bare fists" ,20,4,9);
@@ -217,7 +218,7 @@ int main()
 
     Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon",2,5);
 
-    Rooms initialRoom("Dungeon Beginning","You finished going down the stairs and find yourself in a dimly lit room, at first glance it seems quite empty","You notice two doors opposite to each other at the end of the room, one on the righ side, the other on the left side.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something at ground level, you crouch down and touch it, it appears to be a small wooden chest");
+    Rooms initialRoom("Dungeon Beginning","Down the stairs you find yourself in a dimly lit room, at first glance it seems quite empty","You notice two doors opposite to each other at the end of the room, one on the right side, the other on the left side.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something its a door, you keep going and hit another door");
 
     Rooms leftRoom1("Weapons Room", "You slowly open the door and peek through the gap, it looks like the coast is clear","You notice a door straight ahead, it's your only way of moving forward","idk","idk");
 
@@ -288,7 +289,7 @@ int main()
     }else if(playerOpt == "2")
     {
         system("cls");
-        textBox("The lair's heavy atmosphere weighs down on you, suddenly you begin to think about the people you love most, you decide risking your life is not worth it");
+        textBox("The lair's heavy atmosphere weighs down on you, suddenly you begin to think about the people you love most, you decide risking your life isn't worth it");
         pressAnyKey();
         textBox("You head back to your horse and ride towards Erstonia, maybe a brave enough person will banish the curse once and for all, but that person isn't you");
         pressAnyKey();
@@ -354,11 +355,11 @@ int main()
     textBox(initialRoom.getExtraDescription());
     std::cout<<"\n\nWHAT DOOR DO YOU WANT TO GO THROUGH?\n1.-LEFT DOOR\n2.-RIGHT DOOR\n9.-EXIT PROGRAM\nOPT: ";
     std::cin>>playerOpt;
+    //Start of left door thingy
     if(playerOpt == "1")
     {
         playerOpt = "";
         whileLoop = false;
-        bool whileLoop2 = true;
 
         while(whileLoop2)
         {
@@ -382,10 +383,11 @@ int main()
             std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
             pressAnyKey();
         }
+        }
         whileLoop2 = true;
         
         std::cout<<leftRooms[0].getRoomName()<<"\n";
-        textBox("You enter the room carefully, closing the door behind you, suddenly you see something rise from a corner of the room, it looks like a person");
+        textBox("You enter the room carefully, closing the door behind you. Suddenly, you see something rise from a corner of the room, it looks like a person");
         pressAnyKey();
         textBox("BATTLE START");
         pressAnyKey();
@@ -393,7 +395,7 @@ int main()
 
         while(whileLoop2)
         {
-        textBox("The adventurer plummets to the ground, you decide not to take anything from his body as a sign of respect");
+        textBox("The adventurer plummets to the ground, you decide not to take anything from their body as a sign of respect");
         std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
         std::cin>>playerOpt;
         if(playerOpt == "1")
@@ -411,47 +413,124 @@ int main()
             pressAnyKey();
         }
         }
+
         whileLoop2 = true;
         while (whileLoop2)
         {
-            std::cout<<leftRooms[0].getRoomName()<<"\n";
-            textBox(leftRooms[0].getExtraDescription());
-            std::cout<<"\n\n1.-Go through the door\n9.-End Program\nOPT: ";
-            std::cin>>playerOpt;
-            if(playerOpt == "1")
-            {
-                system("cls");
-                whileLoop2 = false;
-                playerOpt = "";
-            }else if(playerOpt == "9")
-            {
-                return 0;
-            }else
-            {
-                playerOpt = "";
-                std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
-                pressAnyKey();
-            }
+        std::cout<<leftRooms[0].getRoomName()<<"\n";
+        textBox(leftRooms[0].getExtraDescription());
+        std::cout<<"\n\n1.-Go through the door\n9.-End Program\nOPT: ";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+        {
+            system("cls");
+            whileLoop2 = false;
+            playerOpt = "";
+        }else if(playerOpt == "9")
+        {
+            return 0;
+        }else
+        {
+            playerOpt = "";
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
         }
-        
         }
-    }
-    }
 
-    }else
+        whileLoop2 = true;
+        while(whileLoop2)
+        {
+        textBox("You get to the door and open it, the next room is completely empty, aside from a single door to the right of the room");
+        std::cout<<"\n\n1.-Go through the door\n9.-End Program\nOPT: ";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+        {
+            system("cls");
+            whileLoop2 = false;
+            playerOpt = "";
+        }else if(playerOpt == "9")
+        {
+            return 0;
+        }else
+        {
+            playerOpt = "";
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
+        }
+        }
+
+        whileLoop2 = true;
+        while(whileLoop2)
+        {
+        textBox("You go towards the door, you can feel a heavy presence on the other side");
+        std::cout<<"\n\n1.-Go through the door\n9.-End Program\nOPT: ";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+        {
+            system("cls");
+            whileLoop2 = false;
+            playerOpt = "";
+        }else if(playerOpt == "9")
+        {
+            return 0;
+        }else
+        {
+            playerOpt = "";
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
+        }
+
+        whileLoop2 = true;
+        while(whileLoop2)
+        {
+        textBox("You slowly open the door. Before you is a throne room, and at the base of the throne, you see it, a black boned skeleton lying on the ground.");
+        pressAnyKey();
+        textBox("You approach it carefully, ready to attack, and the closer you get to it, the more you're filled with an undescribable dread");
+        pressAnyKey();
+        textBox("You get the closest you can, you're filled with dread and anguish, yet nothing happens.");
+        pressAnyKey();
+        textBox("The necromancer's body is on the floor, nothing but a hollow carcass, but you can feel his former might, each passing second feels like an eternity near his corpse");
+        pressAnyKey();
+        textBox("You dont know why he's dead, but you now understand you would've been no match for him when he was alive");
+        pressAnyKey();
+        textBox("You trace back your steps and return to Erstonia, taking his body with you, the journey is grueling, but you get there");
+        pressAnyKey();
+        textBox("You enter the town and are immediately stopped by its guards, you explain yourself and they lead you to the wizard's guild");
+        pressAnyKey();
+        textBox("The wizards commend you on your bravery. It seems the remnants of the necromancer's magic, still in corpse, were poisoning the land and rising the dead");
+        pressAnyKey();
+        textBox("You will be forever hailed as the town hero, even if you weren't the one to end him, you were the only one brave enough to enter his lair");
+        pressAnyKey();
+        textBox("THE END");
+        std::cout<<"\nENDING 1 of x ~ Breaking the curse";
+        whileLoop2 = false;
+        }
+        }
+
+    }else if (playerOpt == "2")
     {
-    textBox("You've been traveling for days, a guide was assigned to lead you to the entrance of the necromancer's lair, and you're finally here");
-    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT:";
+    playerOpt = "";
+    whileLoop = false;
+    while(whileLoop2)
+    {
+    std::cout<<rightRooms[0].getRoomName()<<"\n";
+    textBox(rightRooms[0].getRoomDescription());
+    std::cout<<"\n\n1.-Continue\n9.-End Program\nOPT: ";
     std::cin>>playerOpt;
-    if(playerOpt == "9")
+    if(playerOpt == "1")
     {
-        whileLoop = false;
+        playerOpt = "";
+        whileLoop2 = false;
+        system("cls");
     }
-    pressAnyKey();
+    }
     }
     
     return 0;
+    }
+    }
 }
+
 
 void setCurrentCharacter(std::vector <Characters>& allCharacters,int &currentCharacter)
 {
@@ -493,7 +572,7 @@ void gameStart(std::vector <Characters> &allCharacters)
     bool whileLoop = true;
     std::string opt;
     std::string characterSelect;
-    std::cout<<"~~~~~OPTIONS~~~~~\n1.-View Character Detarils\n2.-Select Character\n9.-Exit Program\n\nOPT: ";
+    std::cout<<"~~~~~OPTIONS~~~~~\n1.-View Character Details\n2.-Select Character\n9.-Exit Program\n\nOPT: ";
     std::cin>>opt;
    
     
@@ -573,17 +652,8 @@ void gameStart(std::vector <Characters> &allCharacters)
             
         }
 
-    }else if(opt == "9")
-    {
-        exit(0);
-    }else
-    {
-        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
-        pressAnyKey();
-        gameStart(allCharacters);
     }
 }
-
 /*This function prints the names of our playable characters, I decided
 to challenge myself to learn how vectors work for this project, so I'm
 implementing vectors here, I'm using a range based for loop, at the start of the loop
