@@ -509,8 +509,10 @@ int main()
 
     }else if (playerOpt == "2")
     {
+    system("cls");
     playerOpt = "";
     whileLoop = false;
+    whileLoop2 = true;
     while(whileLoop2)
     {
     std::cout<<rightRooms[0].getRoomName()<<"\n";
@@ -522,8 +524,47 @@ int main()
         playerOpt = "";
         whileLoop2 = false;
         system("cls");
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+    playerOpt = "";
+    std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+    pressAnyKey();
     }
     }
+    whileLoop2 = true;
+    while(whileLoop2)
+    {
+    std::cout<<rightRooms[0].getRoomName()<<"\n";
+    textBox("This room is as disturbing as it is empty, there is nothing to do here but admire, or cringe at the bloody mess before you");
+    std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+    std::cin>>playerOpt;
+    if(playerOpt == "1")
+    {
+        playerOpt = "";
+        whileLoop2 = false;
+        system("cls");
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
+    }
+    }
+    whileLoop2 = true;
+    while (whileLoop2)
+    {
+    std::cout<<rightRooms[0].getRoomName()<<"\n";
+    textBox(rightRooms[0].getExtraDescription());
+    std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+    std::cin>>playerOpt;
+    }
+    
     }
     
     return 0;
