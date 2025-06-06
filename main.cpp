@@ -293,7 +293,7 @@ int main()
         pressAnyKey();
         textBox("You head back to your horse and ride towards Erstonia, maybe a brave enough person will banish the curse once and for all, but that person isn't you");
         pressAnyKey();
-        textBox("THE END");
+        textBox("ENDING NO 1. THE COWARD'S ENDING");
         return 0;  
     }else if(playerOpt == "9")
     {
@@ -502,7 +502,7 @@ int main()
         textBox("You will be forever hailed as the town hero, even if you weren't the one to end him, you were the only one brave enough to enter his lair");
         pressAnyKey();
         textBox("THE END");
-        std::cout<<"\nENDING 1 of x ~ Breaking the curse";
+        std::cout<<"\nENDING NO.2 ~ Breaking the curse";
         whileLoop2 = false;
         }
         }
@@ -563,12 +563,152 @@ int main()
     textBox(rightRooms[0].getExtraDescription());
     std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
     std::cin>>playerOpt;
+    if(playerOpt == "1")
+    {
+        playerOpt = "";
+        whileLoop2 = false;
+        system("cls");
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
     }
-    
     }
-    
-    return 0;
+    whileLoop2 = true;
+    while(whileLoop2)
+    {
+        textBox("You slightly open the next door, the next room seems to be a kitchen, with a large cauldron and a dining table");
+        std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+    {
+        playerOpt = "";
+        whileLoop2 = false;
+        system("cls");
+    }else if(playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
     }
+    }
+    whileLoop2 = true;
+    while(whileLoop2)
+    {
+        textBox("You walk inside the room closing the door behind you, inside the room you notice a towering knight with their back toward you");
+        pressAnyKey();
+        textBox("They're holding a staff almost as tall as themself, using it like a cane, they are standing completely still");
+        pressAnyKey();
+        textBox("You cautiously walk around them, as you circle the knight you get in front of them, they have their visor all the way up");
+        pressAnyKey();
+        textBox("You are met with a blank expression and lifeless eyes, the knight is standing there, facing you, dead, but still standing");
+        pressAnyKey();
+        textBox("You notice a familiar crest on their chestplate, it's the mark of the Downom sistherhood, a respected group of mages. She's clutching a religious symbol near her chest with her free hand");
+        pressAnyKey();
+        textBox("You pay respects to the fallen sister towering over you and head on to the next room");
+        std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+        {
+            playerOpt = "";
+            whileLoop2 = false;
+            system("cls");
+        }else if(playerOpt == "9")
+        {
+            return 0;
+        }else
+        {
+            playerOpt = "";
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
+        }
+    }
+    whileLoop2 = true;
+    while(whileLoop2)
+    {
+        textBox("You slowly open the door. Before you is a throne room, and at the base of the throne, you see it, a black boned skeleton lying on the ground.");
+        pressAnyKey();
+        textBox("You approach it carefully, ready to attack, and the closer you get to it, the more you're filled with an undescribable dread");
+        pressAnyKey();
+        textBox("You get the closest you can, you're filled with dread and anguish, yet nothing happens.");
+        pressAnyKey();
+        textBox("The necromancer's body is on the floor, nothing but a hollow carcass, but you can feel his former might, each passing second feels like an eternity near his corpse");
+        pressAnyKey();
+        textBox("You dont know why he's dead, but you now understand you would've been no match for him when he was alive");
+        pressAnyKey();
+        textBox("You look behind you to the previous room, the knight still standing there, lifeless, you come to the conclusion that it was her");
+        pressAnyKey();
+        textBox("She was the one to end the necromancer, at the cost of her life");
+        pressAnyKey();
+        textBox("You trace back your steps and return to Erstonia, taking the necromancer's body with you, the journey is grueling, but you get there");
+        pressAnyKey();
+        textBox("You enter the town and are immediately stopped by its guards, you explain yourself and they lead you to the wizard's guild");
+        pressAnyKey();
+        textBox("The wizards commend you on your bravery, but you tell them the truth. A member of the Downom sisterhood ended him");
+        pressAnyKey();
+        textBox("They commend you on your bravery anyways, they then send a letter to the Downom sisterhood letting them know what happened");
+        pressAnyKey();
+        textBox("It seems the remnants of the necromancer's magic, still in corpse, were poisoning the land and rising the dead");
+        pressAnyKey();
+        textBox("You and sister Brunhilde will be forever remembered as heroes");
+        pressAnyKey();
+        textBox("ENDING NO.3 ~~ THE TRUE HERO");
+        return 0;
+    }
+    }
+    }
+    }else
+    {
+        whileLoop = false;
+        textBox("You've been traveling by horse for days now, then you come to a sudden stop, the person tasked with taking you safely to the necromancer's lair speaks");
+        pressAnyKey();
+        textBox("-Looks like we're here! Let me help you get off the horse");
+        pressAnyKey();
+        textBox("You hear him get off the horse, he ten grabs you by the hand and leads you off the horse. You thank him.");
+        pressAnyKey();
+        textBox("-Hey, I never asked. How'd you lose your sight anyways?");
+        pressAnyKey();
+        textBox("You ignore his question and begin walking toward the dungeon using your staff to assess the terrain, you can feel a powerfull magic emanating from within. It feels magnetic");
+        pressAnyKey();
+        textBox("You hit the lair's entrance with your staff, you feel the dungeon calling your name.");
+        std::cout<<"\n\nDO YOU WISH TO GO INSIDE THE DUNGEON?\n1.-YES\n2.-NO\n9.-EXIT PROGRAM\nOPT:";
+        std::cin>>playerOpt;
+        if(playerOpt == "1")
+        {
+            playerOpt = "";
+            whileLoop2 = false;
+            system("cls");
+        }else if(playerOpt == "2")
+        {
+            system("cls");
+            textBox("The lair's heavy atmosphere weighs down on you, suddenly you begin to feel immense dread");
+            pressAnyKey();
+            textBox("You head back to the person tending to the horse and ask him to take you back, you think your life isn't worth wasting even if it means upsetting your goddess.");
+            pressAnyKey();
+            textBox("ENDING NO 1. THE COWARD'S ENDING");
+            return 0;
+        return 0;  
+        } else if(playerOpt == "9")
+        {
+            return 0;
+        }else
+        {
+            playerOpt = "";
+            std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+            pressAnyKey();
+        }
+        whileLoop2 = false;
+        while(whileLoop2)
+        {
+
+        }
     }
 }
 
