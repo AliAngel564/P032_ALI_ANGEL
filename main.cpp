@@ -130,7 +130,10 @@ class Rooms
     {
         return ephraimDescription;
     }
-    //añadir getters que faltan
+    std::string getEphraimExtraDescription()
+    {
+        return ephraimExtraDescription;
+    }
 };
 
 class Monster
@@ -216,9 +219,9 @@ int main()
     std::vector <Characters> allCharacters = {cyrilla,petrou,ephraim};
     allCharacters.shrink_to_fit();
 
-    Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated\n must be one of the many undead that guard this dungeon",2,5);
+    Monster undeadAdventurer("Undead Adventurer",15,"You see what once was a joyful adventurer, they look gaunt, they fell to the\ncurse of the Necromancer, you have to put them out of their misery","attacks with his broken sword" ,"You hear heavy footsteps, someone is walking towards you, the footsteps sound clumsy and uncoordinated must be one of the many undead that guard this dungeon",2,5);
 
-    Rooms initialRoom("Dungeon Beginning","Down the stairs you find yourself in a dimly lit room, at first glance it seems quite empty","You notice two doors opposite to each other at the end of the room, one on the right side, the other on the left side.","You finished going down the stairs, as your foot leaves the last step you hear your footstep\nreverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain\na few steps into the room your staff hits something its a door, you keep going and hit another door");
+    Rooms initialRoom("Dungeon Beginning","Down the stairs you find yourself in a dimly lit room, at first glance it seems quite empty","You notice two doors opposite to each other at the end of the room, one on the right side, the other on the left side.","You finished going down the stairs, as your foot leaves the last step you hear your step reverberate, the way the sound travels in this room makes you think its small","You pace around the room while listening intently, you use your staff to asses the terrain a few steps into the room your staff hits something its a door, you keep going and find another door");
 
     Rooms leftRoom1("Weapons Room", "You slowly open the door and peek through the gap, it looks like the coast is clear","You notice a door straight ahead, it's your only way of moving forward","idk","idk");
 
@@ -293,7 +296,7 @@ int main()
         pressAnyKey();
         textBox("You head back to your horse and ride towards Erstonia, maybe a brave enough person will banish the curse once and for all, but that person isn't you");
         pressAnyKey();
-        textBox("ENDING NO 1. THE COWARD'S ENDING");
+        textBox("ENDING NO 1. ~ THE COWARD'S ENDING");
         return 0;  
     }else if(playerOpt == "9")
     {
@@ -659,14 +662,22 @@ int main()
         pressAnyKey();
         textBox("You and sister Brunhilde will be forever remembered as heroes");
         pressAnyKey();
-        textBox("ENDING NO.3 ~~ THE TRUE HERO");
+        textBox("ENDING NO.3 ~ THE TRUE HERO");
         return 0;
     }
+    }else if (playerOpt == "9")
+    {
+        return 0;
+    }else
+    {
+        playerOpt = "";
+        std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+        pressAnyKey();
     }
     }
     }else
     {
-        whileLoop = false;
+        whileLoop = true;
         textBox("You've been traveling by horse for days now, then you come to a sudden stop, the person tasked with taking you safely to the necromancer's lair speaks");
         pressAnyKey();
         textBox("-Looks like we're here! Let me help you get off the horse");
@@ -677,22 +688,24 @@ int main()
         pressAnyKey();
         textBox("You ignore his question and begin walking toward the dungeon using your staff to assess the terrain, you can feel a powerfull magic emanating from within. It feels magnetic");
         pressAnyKey();
+        while(whileLoop)
+        {
         textBox("You hit the lair's entrance with your staff, you feel the dungeon calling your name.");
         std::cout<<"\n\nDO YOU WISH TO GO INSIDE THE DUNGEON?\n1.-YES\n2.-NO\n9.-EXIT PROGRAM\nOPT:";
         std::cin>>playerOpt;
         if(playerOpt == "1")
         {
             playerOpt = "";
-            whileLoop2 = false;
+            whileLoop = false;
             system("cls");
         }else if(playerOpt == "2")
         {
             system("cls");
-            textBox("The lair's heavy atmosphere weighs down on you, suddenly you begin to feel immense dread");
+            textBox("The lair's heavy atmosphere weighs down on you, suddenly you begin to feel an intense feeling of fear");
             pressAnyKey();
             textBox("You head back to the person tending to the horse and ask him to take you back, you think your life isn't worth wasting even if it means upsetting your goddess.");
             pressAnyKey();
-            textBox("ENDING NO 1. THE COWARD'S ENDING");
+            textBox("ENDING NO 1. ~ THE COWARD'S ENDING");
             return 0;
         return 0;  
         } else if(playerOpt == "9")
@@ -704,10 +717,165 @@ int main()
             std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
             pressAnyKey();
         }
-        whileLoop2 = false;
-        while(whileLoop2)
+        }
+        whileLoop = true;
+        while(whileLoop)
         {
-
+            textBox("You enter the dungeon and notice a set of stairs directly in front of the entrance, you start slowly going down them assesing the terrain with your staff");
+            std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+            std::cin>>playerOpt;
+            if(playerOpt == "1")
+            {
+                playerOpt = "";
+                whileLoop = false;
+                system("cls");
+            }else if(playerOpt == "9")
+            {
+                return 0;
+            }else
+            {
+                playerOpt = "";
+                std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+                pressAnyKey();
+            }
+        }
+        whileLoop = true;
+        while(whileLoop)
+        {
+            std::cout<<initialRoom.getRoomName()<<"\n";
+            textBox(initialRoom.getEphraimDescription());
+            std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+            std::cin>>playerOpt;
+            if(playerOpt == "1")
+            {
+                playerOpt = "";
+                whileLoop = false;
+                system("cls");
+            }else if(playerOpt == "9")
+            {
+                return 0;
+            }else
+            {
+                playerOpt = "";
+                std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+                pressAnyKey();
+            }
+        }
+        whileLoop = true;
+        while(whileLoop)
+        {
+            std::cout<<initialRoom.getRoomName()<<"\n";
+            std::cout<<initialRoom.getEphraimExtraDescription();
+            std::cout<<"\nWHAT DOOR DO YOU WANT TO GO THROUGH?\n1.FIRST DOOR\n2.SECOND DOOR\n9.-EXIT PROGRAM\n\nOPT: ";
+            std::cin>>playerOpt;
+            if(playerOpt == "1")
+            {
+            whileLoop = false;
+            whileLoop2 = true;
+            while(whileLoop2)
+            {
+                
+                textBox("You decide you want to go through the first door, you walk trough the door while listening intently for any sign of danger");
+                std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+                std::cin>>playerOpt;
+                if(playerOpt == "1")
+                {
+                    playerOpt = "";
+                    whileLoop2 = false;
+                    system("cls");
+                }else if(playerOpt == "9")
+                {
+                    return 0;
+                }else
+                {
+                    playerOpt = "";
+                    std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+                    pressAnyKey();
+                }
+            }
+            whileLoop2 = true;
+            while(whileLoop2)
+            {
+                std::cout<<rightRoom1.getRoomName()<<"\n";
+                textBox(undeadAdventurer.getMonsterCue());
+                pressAnyKey();
+                textBox("BATTLE START");
+                whileLoop2 = false;
+                pressAnyKey();
+            }
+            combatEncounter(allCharacters,undeadAdventurer,currentCharacter);
+            whileLoop2 = true;
+            while(whileLoop2)
+            {
+                textBox("You hear the undead's body plummet to the ground, you decide to asses the room and find a door, its your only way of moving forward");
+                std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+                std::cin>>playerOpt;
+                if(playerOpt == "1")
+                {
+                    playerOpt = "";
+                    whileLoop2 = false;
+                    system("cls");
+                }else if(playerOpt == "9")
+                {
+                    return 0;
+                }else
+                {
+                    playerOpt = "";
+                    std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+                    pressAnyKey();
+                }
+            }
+            whileLoop2 = true;
+            while(whileLoop2)
+            {
+                textBox("You go through the next room uneventfully and find another door, its your only way of moving forward.");
+                std::cout<<"\n\n1.Continue\n9.Exit Program\nOPT: ";
+                std::cin>>playerOpt;
+                if(playerOpt == "1")
+                {
+                    playerOpt = "";
+                    whileLoop2 = false;
+                    system("cls");
+                }else if(playerOpt == "9")
+                {
+                    return 0;
+                }else
+                {
+                    playerOpt = "";
+                    std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+                    pressAnyKey();
+                }
+            }
+            whileLoop2 = true;
+            while(whileLoop2)
+            {
+                textBox("You finally reach the room where you feel a powerfull presence, but you feel something is off. You get close to the source of such power, its in the ground");
+                pressAnyKey();
+                textBox("You hit it with your staff, but it's completely inert, you kneel down to feel it with your hands. It feels like a human skeleton.");
+                pressAnyKey();
+                textBox("It becomes clear to you, this is the necromancer, and someone ended him before you even got here");
+                pressAnyKey();
+                textBox("Your intuition tells you you should take his corpse with you, and so you do. You trace back your steps and get out of the dungeon");
+                pressAnyKey();
+                textBox("The person tasked with getting you to the dungeon is still here, waiting for you, you call him out, and he comes get you and the corpse");
+                pressAnyKey();
+                textBox("You will be forever remembered as a faithful follower, you give the corpse to your elders, and they start working on harnessing its magic");
+                pressAnyKey();
+                textBox("ENDING NO. 5 ~ EPHRAIM'S ENDING");
+            }
+            }else if (playerOpt == "2")
+            {
+                textBox("THE DOOR IS LOCKED");
+                pressAnyKey();
+            }else if(playerOpt == "9")
+            {
+                return 0;
+            }else
+            {
+                playerOpt = "";
+                std::cout<<"INVALID OPTION, PLEASE TRY AGAIN";
+                pressAnyKey();
+            }
         }
     }
 }
@@ -888,7 +1056,13 @@ void combatEncounter(std::vector <Characters>& allCharacters, Monster &thisMonst
     while(whileLoop)
     {
         combatHealth(allCharacters, thisMonster, currentCharacter);
+        if(currentCharacter == 1 || currentCharacter == 0)
+        {
         textBox(thisMonster.getMonsterDescription());
+        }else
+        {
+        textBox(thisMonster.getMonsterCue());
+        }
         if(thisMonster.getMonsterHealth()<=0)
           {
             system("cls");
